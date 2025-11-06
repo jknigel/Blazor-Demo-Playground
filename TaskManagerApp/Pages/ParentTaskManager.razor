@@ -1,0 +1,30 @@
+@page "/task-manager"
+
+<h1>Task Management App</h1>
+
+@if (TaskList.Count == 0)
+{
+    <div class="alert alert-success">All tasks completed!</div>
+}
+else
+{
+    @foreach (var task in TaskList)
+    {
+        <ChildTaskDisplay TaskName="@task" OnTaskCompleted="HandleTaskCompleted" />
+    }
+}
+
+@code {
+    private List<string> TaskList = new List<string> { "Task 1", "Task 2", "Task 3" };
+
+    private void HandleTaskCompleted(string taskName)
+    {
+        TaskList.Remove(taskName);
+        StateHasChanged();
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        Console.WriteLine("ParentTaskManager initialized.");
+    }
+}
