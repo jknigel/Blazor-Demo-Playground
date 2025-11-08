@@ -1,0 +1,38 @@
+@* This component represents one child's chore. *@
+
+<div class="chore-card">
+    <p>Chore to do: <strong>@ChoreName</strong></p>
+    
+    <button @onclick="ChoreWasDone">I'm Done!</button>
+</div>
+
+@code {
+    // --- PARENT TALKING TO CHILD ---
+    // This is a "Parameter." It's how the parent gives this child its chore.
+    // Think of it as a sticky note from the parent.
+    [Parameter]
+    public required string ChoreName { get; set; }
+
+    // --- CHILD TALKING BACK TO PARENT ---
+    // This is an "Event." It's how the child can shout back to the parent.
+    // Think of it as the child's ability to say, "Hey, I'm finished!"
+    [Parameter]
+    public EventCallback OnChoreCompleted { get; set; }
+
+    // This method runs when the "I'm Done!" button is clicked.
+    private async Task ChoreWasDone()
+    {
+        // This is the action of shouting back to the parent.
+        await OnChoreCompleted.InvokeAsync();
+    }
+}
+
+<style>
+    .chore-card {
+        border: 2px solid cornflowerblue;
+        border-radius: 5px;
+        padding: 1rem;
+        margin: 1rem;
+        width: 300px;
+    }
+</style>

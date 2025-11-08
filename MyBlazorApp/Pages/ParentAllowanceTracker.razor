@@ -1,0 +1,32 @@
+@page "/allowance"
+
+<h1>Allowance Tracker</h1>
+
+<h3>Total Allowance Given: $@totalAllowance</h3>
+
+<hr>
+
+@* --- Here is where the parent uses its children --- *@
+
+@* CHILD 1 *@
+<ChildChoreCard 
+    ChoreName="Mow the Lawn" 
+    OnChoreCompleted="GiveAllowance" />
+
+@* CHILD 2 *@
+<ChildChoreCard 
+    ChoreName="Wash the Dishes" 
+    OnChoreCompleted="GiveAllowance" />
+
+
+@code {
+    // This is the parent's data. Only the parent knows about this.
+    private int totalAllowance = 0;
+
+    // This is the parent's method. It runs when ANY child "shouts"
+    // that they have completed their chore.
+    private void GiveAllowance()
+    {
+        totalAllowance = totalAllowance + 5;
+    }
+}
