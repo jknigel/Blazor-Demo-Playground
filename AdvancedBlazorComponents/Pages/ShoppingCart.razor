@@ -1,0 +1,44 @@
+@page "/shopping-cart"
+
+<h1>My Shopping Cart</h1>
+
+@if (cartItems.Any())
+{
+    @foreach (var item in cartItems)
+    {
+        @* 
+           The parent renders a child for each item.
+           - It passes the item's name DOWN using 'ItemName'.
+           - It listens for the 'OnRemoveClicked' event and wires it
+             to its OWN 'RemoveItem' method.
+        *@
+        <ShoppingItem ItemName="@item" OnRemoveClicked="RemoveItem" />
+    }
+}
+else
+{
+    <p>Your cart is empty!</p>
+}
+
+@code {
+    // This is the parent's master list. It is the single source of truth.
+    private List<string> cartItems = new()
+    {
+        "Apples",
+        "Oranges",
+        "Bread"
+    };
+
+    // This method runs when a child component fires its 'OnRemoveClicked' event.
+    // The 'itemNameFromChild' parameter will contain the value that the child sent up.
+    private void RemoveItem(string itemNameFromChild)
+    {
+        // The parent modifies its own master list.
+        cartItems.Remove(itemNameFromChild);
+        
+        Console.WriteLine($"Parent removed '{itemNameFromChild}' from the cart.");
+        
+        // We don't need to call StateHasChanged() here because Blazor
+        // automatically does it after handling an EventCallback.
+    }
+}

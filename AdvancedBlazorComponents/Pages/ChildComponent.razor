@@ -1,0 +1,27 @@
+<div class="child-box">
+    <h4>I am the Child Component</h4>
+    
+    @* This message will be changed by a method call FROM THE PARENT *@
+    <p><strong>Status:</strong> @statusMessage</p>
+</div>
+
+@code {
+    // This is the child's internal data.
+    public string statusMessage = "Waiting for instructions...";
+
+    // This is a PUBLIC method. By making it public, we are allowing
+    // the parent to "reach in" and call it directly.
+    public void UpdateStatusMessage()
+    {
+        statusMessage = "The parent component called my method at " + DateTime.Now.ToLongTimeString();
+        StateHasChanged(); // Tell Blazor to redraw this component to show the new message.
+    }
+}
+
+<style>
+    .child-box {
+        border: 2px dashed red;
+        padding: 1rem;
+        margin-top: 1rem;
+    }
+</style>

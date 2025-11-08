@@ -1,0 +1,50 @@
+@* This component represents ONE item in the shopping cart. *@
+
+<div class="shopping-item">
+    <span>Item: <strong>@ItemName</strong></span>
+    
+    @* This button lives INSIDE the child. *@
+    <button @onclick="SignalToRemove">Remove</button>
+</div>
+
+@code {
+    // --- PARENT TALKING TO CHILD ---
+    // The parent gives this child the name of the item to display.
+    [Parameter]
+    public required string ItemName { get; set; }
+
+    // --- CHILD TALKING BACK TO PARENT ---
+    // The child has the ability to send a "RemoveMe" signal.
+    // It will also send its own name along with the signal,
+    // so the parent knows WHICH item to remove.
+    [Parameter]
+    public EventCallback<string> OnRemoveClicked { get; set; }
+
+    // This method runs when the child's "Remove" button is clicked.
+    private async Task SignalToRemove()
+    {
+        // This is the child shouting back to the parent.
+        // It says, "The remove button was clicked! The item was '@ItemName'."
+        await OnRemoveClicked.InvokeAsync(ItemName);
+    }
+}
+
+<style>
+    .shopping-item {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border: 1px solid #ddd;
+        padding: 0.5rem 1rem;
+        margin: 0.5rem;
+        width: 350px;
+    }
+    .shopping-item button {
+        background-color: #e74c3c;
+        color: white;
+        border: none;
+        padding: 0.3rem 0.6rem;
+        border-radius: 3px;
+        cursor: pointer;
+    }
+</style>

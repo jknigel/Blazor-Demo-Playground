@@ -1,0 +1,38 @@
+@inject Services.DataService DataService
+
+<h3>Reusable Component</h3>
+<p style="color: @ThemeColor">
+    <ul>
+        @foreach (var item in items)
+        {
+            <li>@item</li>
+        }
+    </ul>
+</p>
+
+<ChildComponent @ref="myChildComponent" />
+
+<button class.="btn btn-secondary" @onclick="CallChildMethod">
+    Call a Method on the Child
+</button>
+
+@code {
+    private List<string> items = new();
+
+    protected override void OnInitialized()
+    {
+        items = DataService.GetData();
+    }
+
+    private ChildComponent? myChildComponent;
+
+    private void CallChildMethod()
+    {
+        // Because we have the direct link, we can now call any
+        // PUBLIC method on that child instance.
+        myChildComponent?.UpdateStatusMessage();
+    }
+
+    [CascadingParameter]
+    public required string ThemeColor { get; set; }
+}
