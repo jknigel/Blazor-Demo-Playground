@@ -1,0 +1,118 @@
+@page "/chat"
+@rendermode InteractiveServer
+@using Microsoft.AspNetCore.SignalR.Client
+@inject NavigationManager NavigationManager
+@implements IAsyncDisposable
+
+<h3>Real-Time Chat</h3>
+
+<div class="chat-container">
+    @* We'll loop through our list of received messages and display them *@
+    @foreach (var message in messages)
+    {
+        <div class="message">@message</div>
+    }
+</div>
+
+<hr />
+
+<div class="input-group">
+    <input @bind="userInput" placeholder="Your Name" />
+    <input @bind="messageInput" placeholder="Your Message" @onkeyup="HandleEnterKey" />
+    <button @onclick="Send" disabled="@(!IsConnected)">Send</button>
+</div>
+
+@code {
+    private HubConnection? hubConnection;
+    private List<string> messages = new List<string>();
+
+    private string userInput = string.Empty;
+    private string messageInput = string.Empty;
+
+    public bool IsConnected => hubConnection?.State == HubConnectionState.Connected;
+
+    // 4. This lifecycle method runs when the component is first created.
+    // It's the perfect place to set up our SignalR connection.
+    protected override async Task OnInitializedAsync()
+    {
+        // Create a new HubConnectionBuilder. The URL must match what you
+        // configured in Program.cs.
+        hubConnection = new HubConnectionBuilder()
+        .WithUrl(NavigationManager.ToAbsoluteUri("/notificationhub"))
+        .Build();
+
+        // 5. THIS IS THE LISTENER.
+        // This is the client-side 'ReceiveMessage' function that the server's
+        // 'SendAsync("ReceiveMessage", ...)' will call.
+        // When the hub broadcasts a "ReceiveMessage" event, this lambda expression runs.
+        hubConnection.On<string, string>("ReceiveMessage", (user, message) =>
+        {
+            // Format the received message and add it to our local list.
+            var formattedMessage = $"{user}: {message}";
+            messages.Add(formattedMessage);
+
+            // We are NOT on the main UI thread here, so we must tell Blazor
+            // to update the UI from the "outside".
+            InvokeAsync(StateHasChanged);
+        });
+
+        // 6. Start the connection to the hub.
+        await hubConnection.StartAsync();
+    }
+
+    // 7. This method is called when the "Send" button is clicked.
+    private async Task Send()
+    {
+        if (hubConnection is not null && !string.IsNullOrWhiteSpace(messageInput))
+        {
+            // THIS IS THE CLIENT-TO-SERVER CALL.
+            // This calls the 'SendMessage' method on our NotificationHub on the server.
+            await hubConnection.SendAsync("SendMessage", userInput, messageInput);
+
+            // Clear the message input box after sending.
+            messageInput = string.Empty;
+        }
+    }
+
+    // A little extra feature to send the message when the user presses Enter.
+    private async Task HandleEnterKey(KeyboardEventArgs e)
+    {
+        if (e.Key == "Enter")
+        {
+            await Send();
+        }
+    }
+
+    // 8. This method is crucial for cleaning up. It runs when the user
+    // navigates away from the page, ensuring we close the connection.
+    public async ValueTask DisposeAsync()
+    {
+        if (hubConnection is not null)
+        {
+            await hubConnection.DisposeAsync();
+        }
+    }
+}
+
+<style>
+    .chat-container {
+        border: 1px solid #ccc;
+        padding: 10px;
+        height: 300px;
+        overflow-y: scroll;
+        margin-bottom: 10px;
+    }
+
+    .message {
+        margin-bottom: 5px;
+    }
+
+    .input-group {
+        display: flex;
+        gap: 10px;
+    }
+
+    .input-group input {
+        flex-grow: 1;
+    }
+</style>

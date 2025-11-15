@@ -1,0 +1,57 @@
+@page "/signalrchat"
+@rendermode InteractiveServer
+@using Microsoft.AspNetCore.SignalR.Client
+@inject NavigationManager Navigation
+
+<h3>SignalR Chat</h3>
+
+<input @bind="userName" placeholder="Enter your name" />
+<input @bind="message" placeholder="Enter a message" />
+<button @onclick="SendMessage">Send</button>
+
+<ul>
+    @foreach (var msg in messages)
+    {
+        <li>@msg</li>
+    }
+</ul>
+
+@code {
+    private string userName;
+    private string message;
+    private List<string> messages = new();
+
+    private HubConnection? hubConnection;
+
+    protected override async Task OnInitializedAsync()
+    {
+        hubConnection = new HubConnectionBuilder()
+            .WithUrl(Navigation.ToAbsoluteUri("/notificationHub"))
+            .Build();
+
+        hubConnection.On<string, string>("ReceiveMessage", (user, msg) =>
+        {
+            var encodedMsg = $"{user}: {msg}";
+            messages.Add(encodedMsg);
+            InvokeAsync(StateHasChanged);
+        });
+
+        await hubConnection.StartAsync();
+    }
+
+    private async Task SendMessage()
+    {
+        if (hubConnection is not null)
+        {
+            await hubConnection.SendAsync("SendMessage", userName, message);
+        }
+    }
+
+    public async ValueTask DisposeAsync()
+    {
+        if (hubConnection is not null)
+        {
+            await hubConnection.DisposeAsync();
+        }
+    }
+}

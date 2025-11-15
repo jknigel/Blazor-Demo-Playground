@@ -1,10 +1,13 @@
 using BlazorServerApp.Components;
+using BlazorServerApp.Hubs;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
+
+builder.Services.AddSignalR();
 
 var app = builder.Build();
 
@@ -17,11 +20,15 @@ if (!app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+//app.UseStaticFiles();
+//app.UseAntiforgery();
 
 app.UseStaticFiles();
 app.UseAntiforgery();
 
 app.MapRazorComponents<App>()
     .AddInteractiveServerRenderMode();
+
+app.MapHub<NotificationHub>("/notificationHub").AllowAnonymous();
 
 app.Run();
