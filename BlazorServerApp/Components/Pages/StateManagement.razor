@@ -1,0 +1,15 @@
+@page "/state"
+@rendermode InteractiveServer
+
+<h3>State Management</h3>
+<p>Click Count: @clickcount</p>
+<button @onclick="IncrementClickCount">Click Me</button>
+
+@code {
+    private int clickcount;
+
+    private void IncrementClickCount()
+    {
+        clickcount ++;
+    }
+}

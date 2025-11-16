@@ -1,0 +1,31 @@
+@inject ILogger<HybridComponent> Logger
+<h3>Hybrid Rendering Component</h3>
+
+@if (Data == null || !Data.Any())
+{
+    <p>No data available.</p>
+}
+else
+{
+    <ul>
+        @foreach (var item in Data) {
+            <li>@item</li>
+        }
+    </ul>
+}
+
+@code {
+    private List<string>? Data;
+
+    protected override Task OnInitializedAsync() {
+        Logger?.LogInformation("Fetching data...");
+        Data = new List<string> {
+            "Test Data 1",
+            "Test Data 2",
+            "Test Data 3"
+        };
+        Logger?.LogInformation("Data fetch completed.");
+
+        return Task.CompletedTask;
+    }
+}

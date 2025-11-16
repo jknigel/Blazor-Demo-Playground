@@ -1,0 +1,21 @@
+﻿@page "/"
+
+<PageTitle>Home</PageTitle>
+
+<h1>Welcome to Blazor Performance App</h1>
+
+<button @onclick="LoadComponent">Load Hybrid Component</button>
+
+@if (IsComponentLoaded)
+{
+    <HybridComponent />
+}
+
+@code {
+    private bool IsComponentLoaded = false;
+
+    private void LoadComponent()
+    {
+        IsComponentLoaded = true;
+    }
+}
