@@ -14,6 +14,7 @@ public class EventService
     };
 
     private int _nextId = 4;
+    private readonly List<Registration> _registrations = new();
 
     // A public method to get all events.
     public List<Event> GetAllEvents() => _events;
@@ -28,5 +29,13 @@ public class EventService
     {
         newEvent.Id = _nextId++; // Assign a new unique ID
         _events.Add(newEvent);
+    }
+
+    public void RegisterAttendee(Registration registration)
+    {
+        // In a real application, you would save this to a database.
+        // For now, we just add it to our in-memory list.
+        _registrations.Add(registration);
+        Console.WriteLine($"New registration for Event ID {registration.EventId}: {registration.AttendeeName}");
     }
 }

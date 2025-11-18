@@ -15,6 +15,33 @@
     // into this card. This is how data binding is achieved for display.
     [Parameter]
     public Event EventData { get; set; } = new(); // Initialize to avoid null issues.
+
+    // 1. A private field to store a "cached" copy of the last known event data.
+    private Event? _cachedEventData;
+
+    // 2. We override ShouldRender to add our custom rendering logic.
+    protected override bool ShouldRender()
+    {
+        // 3. We compare the incoming EventData with our cached version.
+        //    If they are the same object, there's no need to re-render.
+        if (_cachedEventData == EventData)
+        {
+            // By returning false, we prevent the component from redrawing its HTML.
+            return false;
+        }
+
+        // If the data is different, we allow the render to proceed.
+        return true;
+    }
+
+    // 4. We override OnParametersSet to update our cached version.
+    //    This method runs every time the parent tries to give us new parameters.
+    protected override void OnParametersSet()
+    {
+        // We update our cache to the new data that was just received.
+        // This ensures our next ShouldRender check is accurate.
+        _cachedEventData = EventData;
+    }
 }
 
 <style>

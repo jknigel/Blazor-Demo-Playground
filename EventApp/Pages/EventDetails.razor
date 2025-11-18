@@ -1,5 +1,6 @@
 @page "/event/{EventId:int}"
 @inject Services.EventService MyEventService
+@inject SessionStateService SessionState // <-- Inject the session service
 @using EventApp.Models
 
 @if (currentEvent != null)
@@ -11,8 +12,19 @@
     
     <hr />
 
-    @* Link to the registration page for this specific event *@
-    <a href="/register/@currentEvent.Id" class="btn btn-success">Register for this Event</a>
+    @* --- UPDATE THIS SECTION TO SHOW ATTENDANCE STATUS --- *@
+    @if (SessionState.IsAttending(currentEvent.Id))
+    {
+        <div class="alert alert-success">
+            You are registered for this event!
+        </div>
+    }
+    else
+    {
+        <a href="/register/@currentEvent.Id" class="btn btn-success">Register for this Event</a>
+    }
+    @* ---------------------------------------------------- *@
+
     <a href="/" class="btn btn-secondary">Back to List</a>
 }
 else
@@ -21,15 +33,12 @@ else
 }
 
 @code {
-    // This parameter receives the 'EventId' from the URL.
     [Parameter]
     public int EventId { get; set; }
-
     private Event? currentEvent;
 
     protected override void OnInitialized()
     {
-        // Find the specific event using the ID from the URL.
         currentEvent = MyEventService.GetEventById(EventId);
     }
 }

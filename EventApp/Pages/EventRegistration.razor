@@ -1,14 +1,75 @@
 @page "/register/{EventId:int}"
+@inject Services.EventService MyEventService
+@inject NavigationManager NavManager
+@inject SessionStateService SessionState // <-- Inject the session service
+@using EventApp.Models
 
-<h1>Event Registration</h1>
+<PageTitle>Register for Event</PageTitle>
 
-<p>You are registering for Event ID: <strong>@EventId</strong></p>
-<p>(Registration form would go here)</p>
+@if (targetEvent != null)
+{
+    <h3>Register for: @targetEvent.Name</h3>
+    <p>Please fill out the form below to register for this event.</p>
 
-<a href="/event/@EventId" class="btn btn-secondary">Back to Event Details</a>
+    <EditForm Model="registrationModel" OnValidSubmit="HandleValidRegistration">
+        <DataAnnotationsValidator />
+
+        <div class="mb-3">
+            <label for="attendeeName" class="form-label">Your Name</label>
+            <InputText id="attendeeName" class="form-control" @bind-Value="registrationModel.AttendeeName" />
+            <ValidationMessage For="() => registrationModel.AttendeeName" />
+        </div>
+
+        <div class="mb-3">
+            <label for="attendeeEmail" class="form-label">Your Email</label>
+            <InputText id="attendeeEmail" class="form-control" @bind-Value="registrationModel.AttendeeEmail" />
+            <ValidationMessage For="() => registrationModel.AttendeeEmail" />
+        </div>
+
+        <button type="submit" class="btn btn-primary">Confirm Registration</button>
+        <a href="/event/@EventId" class="btn btn-secondary">Back to Details</a>
+    </EditForm>
+}
+else
+{
+    <p>The event you are trying to register for could not be found.</p>
+}
+
 
 @code {
-    // This parameter receives the 'EventId' from the URL.
     [Parameter]
     public int EventId { get; set; }
+    private Event? targetEvent;
+    private Registration registrationModel = new();
+
+    protected override void OnInitialized()
+    {
+        targetEvent = MyEventService.GetEventById(EventId);
+        if (targetEvent != null)
+        {
+            registrationModel.EventId = targetEvent.Id;
+        }
+
+        // Pre-fill the name if the user is already "logged in"
+        if (SessionState.IsUserLoggedIn)
+        {
+            registrationModel.AttendeeName = SessionState.CurrentUserName ?? "";
+        }
+    }
+
+    private void HandleValidRegistration()
+    {
+        // "Log in" the user for this session
+        SessionState.Login(registrationModel.AttendeeName);
+        
+        // Use the event service to store the registration data
+        MyEventService.RegisterAttendee(registrationModel);
+
+        // --- NEW: TRACK ATTENDANCE ---
+        // Use the session service to mark that this user is attending this event.
+        SessionState.AttendEvent(EventId);
+        // ---------------------------
+
+        NavManager.NavigateTo($"/event/{EventId}");
+    }
 }
