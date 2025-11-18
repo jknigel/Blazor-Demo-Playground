@@ -1,0 +1,14 @@
+@page "/register/{EventId:int}"
+
+<h1>Event Registration</h1>
+
+<p>You are registering for Event ID: <strong>@EventId</strong></p>
+<p>(Registration form would go here)</p>
+
+<a href="/event/@EventId" class="btn btn-secondary">Back to Event Details</a>
+
+@code {
+    // This parameter receives the 'EventId' from the URL.
+    [Parameter]
+    public int EventId { get; set; }
+}

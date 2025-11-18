@@ -1,0 +1,37 @@
+@* This component's only job is to display a single event. *@
+@using EventApp.Models
+
+<div class="event-card">
+    <h3>@EventData.Name</h3>
+    <p><strong>Date:</strong> @EventData.Date.ToShortDateString()</p>
+    <p><strong>Location:</strong> @EventData.Location</p>
+
+    @* This link provides the navigation to the details page. *@
+    <a href="/event/@EventData.Id" class="details-link">View Details</a>
+</div>
+
+@code {
+    // This parameter allows a parent component to pass an entire 'Event' object
+    // into this card. This is how data binding is achieved for display.
+    [Parameter]
+    public Event EventData { get; set; } = new(); // Initialize to avoid null issues.
+}
+
+<style>
+    .event-card {
+        border: 1px solid #ccc;
+        border-radius: 8px;
+        padding: 1rem;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        text-align: center;
+    }
+    .details-link {
+        display: inline-block;
+        margin-top: 1rem;
+        padding: 0.5rem 1rem;
+        background-color: #0d6efd;
+        color: white;
+        text-decoration: none;
+        border-radius: 5px;
+    }
+</style>

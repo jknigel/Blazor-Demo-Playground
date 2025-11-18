@@ -1,0 +1,57 @@
+@page "/addevent"
+@inject Services.EventService MyEventService
+@inject NavigationManager NavManager
+@using EventApp.Models
+
+<PageTitle>Add New Event</PageTitle>
+
+<h3>Add New Event</h3>
+
+@* 
+    EditForm is Blazor's powerful form component.
+    - 'Model' is the C# object the form is bound to.
+    - 'OnValidSubmit' is an event that only fires if all validation rules pass.
+*@
+<EditForm Model="newEvent" OnValidSubmit="HandleValidSubmit">
+
+    @* This component enables validation based on the Data Annotations in our model. *@
+    <DataAnnotationsValidator />
+
+    <div class="mb-3">
+        <label for="eventName" class="form-label">Event Name</label>
+        <InputText id="eventName" class="form-control" @bind-Value="newEvent.Name" />
+        <ValidationMessage For="() => newEvent.Name" />
+    </div>
+
+    <div class="mb-3">
+        <label for="eventDate" class="form-label">Event Date</label>
+        <InputDate id="eventDate" class="form-control" @bind-Value="newEvent.Date" />
+        <ValidationMessage For="() => newEvent.Date" />
+    </div>
+
+    <div class="mb-3">
+        <label for="eventLocation" class="form-label">Location</label>
+        <InputText id="eventLocation" class="form-control" @bind-Value="newEvent.Location" />
+        <ValidationMessage For="() => newEvent.Location" />
+    </div>
+
+    <button type="submit" class="btn btn-primary">Create Event</button>
+    <a href="/" class="btn btn-secondary">Cancel</a>
+
+</EditForm>
+
+
+@code {
+    // A private field to hold the data for the new event we're creating.
+    private Event newEvent = new();
+
+    // This method is called ONLY if the form is valid.
+    private void HandleValidSubmit()
+    {
+        // Use the service to add the new event to our central list.
+        MyEventService.AddEvent(newEvent);
+
+        // Navigate the user back to the homepage to see the updated list.
+        NavManager.NavigateTo("/");
+    }
+}

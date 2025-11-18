@@ -1,0 +1,36 @@
+﻿@page "/"
+@inject Services.EventService MyEventService
+@using EventApp.Models
+@using EventApp.Shared
+
+<PageTitle>Upcoming Events</PageTitle>
+
+<h1>Upcoming Events</h1>
+<a href="/addevent" class="btn btn-primary">Add New Event</a>
+
+<div class="event-list-container">
+    @* We loop through the list of events *@
+    @foreach (var anEvent in Events)
+    {
+        @* And render our reusable EventCard component for each one, passing the data down. *@
+        <EventCard EventData="anEvent" />
+    }
+</div>
+
+@code {
+    private List<Event> Events = new();
+
+    protected override void OnInitialized()
+    {
+        // When the page loads, get all events from the service.
+        Events = MyEventService.GetAllEvents();
+    }
+}
+
+<style>
+    .event-list-container {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 1.5rem;
+    }
+</style>
