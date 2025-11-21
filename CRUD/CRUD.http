@@ -1,0 +1,34 @@
+@CRUD_HostAddress = http://localhost:5095
+
+###
+
+//Get all items
+GET {{CRUD_HostAddress}}/all-items
+
+###
+
+GET {{CRUD_HostAddress}}/item/3
+
+###
+
+POST {{CRUD_HostAddress}}/item
+Content-Type: application/json
+
+{
+    "name": "NewItem1",
+    "price": 19.99
+}
+
+###
+
+PUT {{CRUD_HostAddress}}/item/3
+Content-Type: application/json
+
+{
+    "name": "UpdatedItem3",
+    "price": 29.99
+}
+
+###
+
+DELETE {{CRUD_HostAddress}}/item/1
