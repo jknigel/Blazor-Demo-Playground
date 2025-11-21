@@ -25,3 +25,5 @@
 /Middleware/obj/
 /CRUD/bin/
 /CRUD/obj/
+/DependencyInjection/bin/
+/DependencyInjection/obj/
