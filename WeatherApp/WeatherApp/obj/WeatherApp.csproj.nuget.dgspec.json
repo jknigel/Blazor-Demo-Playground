@@ -1,20 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\nigel\\OneDrive\\Desktop\\Blazor-Demo-Playground\\Blazor-Demo-Playground\\WeatherApp\\WeatherApp\\WeatherApp.csproj": {}
+    "/workspaces/Blazor-Demo-Playground/WeatherApp/WeatherApp/WeatherApp.csproj": {}
   },
   "projects": {
-    "C:\\Users\\nigel\\OneDrive\\Desktop\\Blazor-Demo-Playground\\Blazor-Demo-Playground\\WeatherApp\\WeatherApp\\WeatherApp.csproj": {
+    "/workspaces/Blazor-Demo-Playground/WeatherApp/WeatherApp/WeatherApp.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\nigel\\OneDrive\\Desktop\\Blazor-Demo-Playground\\Blazor-Demo-Playground\\WeatherApp\\WeatherApp\\WeatherApp.csproj",
+        "projectUniqueName": "/workspaces/Blazor-Demo-Playground/WeatherApp/WeatherApp/WeatherApp.csproj",
         "projectName": "WeatherApp",
-        "projectPath": "C:\\Users\\nigel\\OneDrive\\Desktop\\Blazor-Demo-Playground\\Blazor-Demo-Playground\\WeatherApp\\WeatherApp\\WeatherApp.csproj",
-        "packagesPath": "C:\\Users\\nigel\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\nigel\\OneDrive\\Desktop\\Blazor-Demo-Playground\\Blazor-Demo-Playground\\WeatherApp\\WeatherApp\\obj\\",
+        "projectPath": "/workspaces/Blazor-Demo-Playground/WeatherApp/WeatherApp/WeatherApp.csproj",
+        "packagesPath": "/home/vscode/.nuget/packages/",
+        "outputPath": "/workspaces/Blazor-Demo-Playground/WeatherApp/WeatherApp/obj/",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\nigel\\AppData\\Roaming\\NuGet\\NuGet.Config"
+          "/home/vscode/.nuget/NuGet/NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net10.0"
@@ -99,7 +99,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\10.0.100/PortableRuntimeIdentifierGraph.json",
+          "runtimeIdentifierGraphPath": "/usr/share/dotnet/sdk/10.0.100/PortableRuntimeIdentifierGraph.json",
           "packagesToPrune": {
             "Microsoft.CSharp": "(,4.7.32767]",
             "Microsoft.VisualBasic": "(,10.4.32767]",
