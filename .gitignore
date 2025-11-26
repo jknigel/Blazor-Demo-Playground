@@ -32,3 +32,5 @@
 /.devcontainer/
 /ErrorHandling/bin/
 /ErrorHandling/obj/
+/Serialization/bin/
+/Serialization/obj/
