@@ -4,7 +4,6 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using NSwag;
 using NSwag.CodeGeneration.CSharp;
-
 public class ClientGenerator
 {
     public async Task GenerateClient()
@@ -12,16 +11,14 @@ public class ClientGenerator
         using var httpClient = new HttpClient();
         var swaggerJson = await httpClient.GetStringAsync("http://localhost:8080/swagger/v1/swagger.json");
         var document = await OpenApiDocument.FromJsonAsync(swaggerJson);
-
         var settings = new CSharpClientGeneratorSettings
         {
             ClassName = "CustomApiClient",
-            CSharpGeneratorSettings = { Namespace = "CustomApiClientNamespace" }
+            CSharpGeneratorSettings = { Namespace = "CustomNamespace" }
         };
-
         var generator = new CSharpClientGenerator(document, settings);
         var code = generator.GenerateFile();
-
-        await File.WriteAllTextAsync("GeneratedApiClient.cs", code);
+        await File.WriteAllTextAsync("CustomApiClient.cs", code);
     }
 }
+
