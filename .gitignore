@@ -40,3 +40,5 @@
 /SerializationSecurityApp/obj/
 /MyAspNetCoreApp/bin/
 /MyAspNetCoreApp/obj/
+/SwaggerApiClient/bin/
+/SwaggerApiClient/obj/
