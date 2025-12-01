@@ -1,0 +1,48 @@
+// Define a variable for your server's address.
+// IMPORTANT: Use the EXACT address from your 'dotnet run' terminal, including http://
+@baseUrl = http://localhost:5243
+
+// Define your API key as a variable for easy reuse.
+@apiKey = TechHiveSecretKey123
+
+###
+# TEST 1: Get All Users (WITH the correct API Key)
+# This request should SUCCEED.
+GET {{baseUrl}}/api/users
+X-Api-Key: {{apiKey}}
+
+###
+# TEST 2: Get a Single User (WITH the correct API Key)
+# This request should SUCCEED.
+GET {{baseUrl}}/api/users/1
+X-Api-Key: {{apiKey}}
+
+###
+# TEST 3: Create a New User (WITH the correct API Key)
+# This request should SUCCEED.
+POST {{baseUrl}}/api/users
+Content-Type: application/json
+X-Api-Key: {{apiKey}}
+
+{
+    "name": "Charles Davis",
+    "email": "charles.d@techhive.com"
+}
+
+###
+# TEST 4: Update a User (WITH the correct API Key)
+# This request should SUCCEED.
+PUT {{baseUrl}}/api/users/1
+Content-Type: application/json
+X-Api-Key: {{apiKey}}
+
+{
+    "name": "Alice J. Smith",
+    "email": "alice.smith@techhive.com"
+}
+
+###
+# TEST 5: Try to Get Users WITHOUT the API Key
+# This request MUST FAIL with a 401 Unauthorized.
+# This proves your security is working.
+GET {{baseUrl}}/api/users

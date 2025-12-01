@@ -34,7 +34,7 @@ public class UsersController : ControllerBase
         var user = _users.FirstOrDefault(u => u.Id == id);
         if (user == null)
         {
-            return NotFound(); // Returns a 404 error if the user isn't found.
+            return NotFound($"User with ID {id} not found."); // Returns a 404 error if the user isn't found.
         }
         return Ok(user);
     }
@@ -48,7 +48,7 @@ public class UsersController : ControllerBase
         {
             return BadRequest("User data is null.");
         }
-        
+
         newUser.Id = _nextId++;
         _users.Add(newUser);
 
@@ -85,7 +85,13 @@ public class UsersController : ControllerBase
         }
 
         _users.Remove(userToRemove);
-        
+
         return NoContent(); // Returns a "204 No Content" success status.
+    }
+
+    [HttpGet("test-error")]
+    public IActionResult TestError()
+    {
+        throw new InvalidOperationException("This is a test exception.");
     }
 }
