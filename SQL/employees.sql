@@ -51,3 +51,13 @@ WHERE
     Salary = (SELECT MAX(Salary) FROM Employees WHERE Department='Sales');
 
 SELECT Department, SUM(Salary) AS TotalSalary FROM `Employees` GROUP BY `Department`;
+
+SELECT Department, AVG(Salary) AS AvgSalary FROM `Employees` GROUP BY `Department`;
+
+SELECT Department, Count(*) AS EmployeeCount FROM `Employees` GROUP BY `Department`;
+
+SELECT CONCAT(FirstName, ' ', LastName) AS FullName, LENGTH(CONCAT(FirstName, ' ', LastName)) AS NameLength FROM `Employees`;
+
+SELECT YEAR(HireDate) AS HireYear, COUNT(*) AS EmployeeCount FROM Employees GROUP BY HireYear;
+
+SELECT YEAR(HireDate) AS HireYear, SUM(Salary) AS TotalSalary FROM `Employees` GROUP BY HireYear;
