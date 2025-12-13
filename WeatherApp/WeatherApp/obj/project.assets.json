@@ -2134,19 +2134,19 @@
     ]
   },
   "packageFolders": {
-    "/home/vscode/.nuget/packages/": {}
+    "C:\\Users\\nigel\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "/workspaces/Blazor-Demo-Playground/WeatherApp/WeatherApp/WeatherApp.csproj",
+      "projectUniqueName": "C:\\Users\\nigel\\OneDrive\\Desktop\\Blazor-Demo-Playground\\Blazor-Demo-Playground\\WeatherApp\\WeatherApp\\WeatherApp.csproj",
       "projectName": "WeatherApp",
-      "projectPath": "/workspaces/Blazor-Demo-Playground/WeatherApp/WeatherApp/WeatherApp.csproj",
-      "packagesPath": "/home/vscode/.nuget/packages/",
-      "outputPath": "/workspaces/Blazor-Demo-Playground/WeatherApp/WeatherApp/obj/",
+      "projectPath": "C:\\Users\\nigel\\OneDrive\\Desktop\\Blazor-Demo-Playground\\Blazor-Demo-Playground\\WeatherApp\\WeatherApp\\WeatherApp.csproj",
+      "packagesPath": "C:\\Users\\nigel\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\nigel\\OneDrive\\Desktop\\Blazor-Demo-Playground\\Blazor-Demo-Playground\\WeatherApp\\WeatherApp\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "/home/vscode/.nuget/NuGet/NuGet.Config"
+        "C:\\Users\\nigel\\AppData\\Roaming\\NuGet\\NuGet.Config"
       ],
       "originalTargetFrameworks": [
         "net10.0"
@@ -2231,7 +2231,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "/usr/share/dotnet/sdk/10.0.100/PortableRuntimeIdentifierGraph.json",
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\10.0.100/PortableRuntimeIdentifierGraph.json",
         "packagesToPrune": {
           "Microsoft.CSharp": "(,4.7.32767]",
           "Microsoft.VisualBasic": "(,10.4.32767]",
