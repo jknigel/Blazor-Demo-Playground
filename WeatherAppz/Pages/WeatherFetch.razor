@@ -1,0 +1,75 @@
+@page "/weatherfetch"
+@inject HttpClient Http;
+
+<h3>Weather Information</h3>
+
+@if (weather is not null)
+{
+    <div>
+        <h4>@weather.Location.Name, @weather.Location.Country</h4>
+        <p>Temperature: @weather.Current.Temp_c</p>
+        <p>Condition: @weather.Current.Condition.Text</p>
+        <img src="https:@weather.Current.Condition.Icon" alt="Weather Condition" />
+    </div>
+}
+else
+{
+    <p><em>Unable to fetch weather data. Please try again later.</em></p>
+}
+
+@code {
+    private WeatherData? weather;
+    protected override async Task OnInitializedAsync()
+    {
+        try{
+            weather = await Http.GetFromJsonAsync<WeatherData>("https://api.weatherapi.com/v1/current.json?key=API_KEY&q=London");
+        }
+        catch(Exception ex)
+        {
+            Console.WriteLine($"Error fetching weather data: {ex.Message}");
+
+            weather = new WeatherData
+            {
+                Location = new Location
+                {
+                    Name = "Unable to Load",
+                    Country = "N/A"
+                },
+                Current = new Current
+                {
+                    Temp_c = 0, // Using the lowercase 'c' to match your previous code
+                    Condition = new Condition
+                    {
+                        Text = "Please try again later.",
+                        // You can find a generic "not found" or "error" icon URL to use here
+                        Icon = "//cdn.weatherapi.com/weather/64x64/day/122.png" // Example: Overcast icon
+                    }
+                }
+            };
+        }        
+    }
+
+    public class WeatherData
+    {
+        public required Location Location { get; set; }
+        public required Current Current { get; set; }
+    }
+
+    public class Location
+    {
+        public required string Name { get; set; }
+        public required string Country { get; set; }
+    }
+
+    public class Current
+    {
+        public required double Temp_c { get; set; }
+        public required Condition Condition { get; set; }
+    }
+
+    public class Condition
+    {
+        public required string Text { get; set; }
+        public required string Icon { get; set; }
+    }
+}

@@ -1,0 +1,57 @@
+@page "/fetchdata"
+@inject HttpClient Http
+@using YourBlazorWasmApp.Models
+
+<PageTitle>Product Data</PageTitle>
+
+<h1>Products from API</h1>
+
+<p>This component demonstrates fetching data from a backend API.</p>
+
+@if (products == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var product in products)
+            {
+                <tr>
+                    <td>@product.Id</td>
+                    <td>@product.Name</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+    // A private field to hold our list of products.
+    // It is nullable (Product[]?) because it will be null until the data arrives.
+    private Product[]? products;
+
+    // This lifecycle method runs automatically when the component is first created.
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            // 1. Use the injected HttpClient to make the API call.
+            //    The base address ("https://localhost:7001") is already configured.
+            //    We just need to provide the specific endpoint ("products").
+            products = await Http.GetFromJsonAsync<Product[]>("products");
+        }
+        catch (Exception ex)
+        {
+            // It's good practice to log errors to the browser's console.
+            Console.WriteLine($"Error fetching data: {ex.Message}");
+        }
+    }
+}

@@ -1,0 +1,63 @@
+@using WeatherAppz.Models
+@using WeatherAppz.Services
+@page "/dynamicweather"
+
+@* 1. We ONLY need to inject the service. The service has its own HttpClient. *@
+@inject WeatherStateService StateService
+@implements IDisposable
+
+<h3>Dynamic Data Dashboard</h3>
+
+<p>Click the buttons to fetch data, which will be managed by a central state service.</p>
+
+<div class="mb-3">
+    @* 2. These buttons call methods DIRECTLY on the StateService *@
+    <button class="btn btn-primary" @onclick='() => StateService.FetchWeatherAsync("London")'>Fetch Weather</button>
+    <button class="btn btn-secondary" @onclick="StateService.FetchUsersAsync">Fetch Users</button>
+</div>
+
+@* 3. This 'if' now checks the service's 'IsLoading' property *@
+@if (StateService.IsLoading)
+{
+    <p><em>Loading data from the service...</em></p>
+}
+else
+{
+    @* 4. This HTML now displays data DIRECTLY from the StateService's properties *@
+    @if (StateService.CurrentWeather?.Location != null)
+    {
+        <h4>Weather for @StateService.CurrentWeather.Location.Name</h4>
+        <p>Temp: @StateService.CurrentWeather.Current?.Temp_c C</p>
+    }
+
+    @if (StateService.Users != null)
+    {
+        <h4>Users:</h4>
+        <ul>
+            @foreach (var user in StateService.Users)
+            {
+                <li>@user.Name (@user.Email)</li>
+            }
+        </ul>
+    }
+}
+
+
+@code {
+    // 5. THE COMPONENT'S @CODE BLOCK IS NOW ALMOST EMPTY.
+    //    All the logic (HttpClient, CancellationToken, etc.) has been moved to the service.
+    //    The component's only C# job is to listen for changes.
+
+    protected override void OnInitialized()
+    {
+        // Subscribe to the service's "something changed" event.
+        // When the service broadcasts a change, this will trigger a re-render.
+        StateService.OnStateChange += StateHasChanged;
+    }
+
+    // It's crucial to unsubscribe when the component is destroyed to prevent memory leaks.
+    public void Dispose()
+    {
+        StateService.OnStateChange -= StateHasChanged;
+    }
+}

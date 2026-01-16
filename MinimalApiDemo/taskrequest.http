@@ -1,0 +1,28 @@
+@baseUrl = http://localhost:5022
+
+###
+GET {{baseUrl}}/tasks
+
+###
+POST {{baseUrl}}/tasks
+Content-Type: application/json
+
+{
+   "id": 1,
+   "name": "Learn .NET Minimal API",
+   "isCompleted": false
+}
+
+###
+PUT {{baseUrl}}/tasks/1
+Content-Type: application/json
+
+{
+   "id": 1,
+   "name": "Learn .NET Minimal API - Updated",
+   "isCompleted": true
+}
+
+###
+DELETE {{baseUrl}}/tasks/1
+###
